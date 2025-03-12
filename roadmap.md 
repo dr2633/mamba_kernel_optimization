@@ -1,0 +1,124 @@
+# Roadmap: Optimizing CUDA and Triton Kernels for Efficient Memory Retrieval and Inference with Mamba
+
+The goal of this repository is to optimize inference latency and memory retrieval performance for state-space models (SSMs), specifically targeting [Llambda 3-B](https://huggingface.co/cartesia-ai/Llamba-3B), using custom CUDA and Triton kernels integrated with [Mem0](https://github.com/jameshaydon/mem0).
+
+---
+
+## Repository Structure
+
+```
+mamba_kernel_optimization/
+├── edge/                       # Git submodule for [Cartesia Edge](https://github.com/cartesia-ai/edge) 
+├── mem0/                       # Git submodule for [Mem0](https://github.com/jameshaydon/mem0)
+├── kernels/
+│   ├── cuda/                   # Custom CUDA kernels
+│   └── triton/                 # Custom [Triton](https://github.com/openai/triton) kernels
+├── mem0_integration/           # Wrappers and interfaces for Mem0
+├── benchmarks/                 # Scripts and results for benchmarking
+│   ├── baseline_benchmarks.md
+│   ├── latency_results.csv
+│   └── performance_plots.ipynb
+├── profiling/                  # GPU profiling results and analysis
+│   └── nsight_analysis.md
+├── scripts/
+│   ├── benchmark.py
+│   └── perf_analyzer/          # [Triton Perf Analyzer](https://github.com/triton-inference-server/perf_analyzer)
+│       └── perf_setup.sh
+└── docs/
+    ├── README.md               # Project overview and setup instructions
+    └── roadmap.md              # This roadmap document
+```
+
+---
+
+## Step-by-Step Project Roadmap
+
+### Step 1: Initial Environment Setup
+- Fork and clone [Cartesia Edge](https://github.com/cartesia-ai/edge) repository.
+- Add [Mem0](https://github.com/jameshaydon/mem0) as a git submodule or document clear installation instructions.
+- Create a conda environment (`environment.yml`) or Dockerfile clearly listing dependencies ([PyTorch](https://pytorch.org/), [CUDA toolkit](https://developer.nvidia.com/cuda-toolkit), [Triton](https://github.com/openai/triton), [Nsight tools](https://developer.nvidia.com/nsight-systems)).
+
+### Step 2: Baseline Performance Benchmarking
+- Run baseline inference using Edge/Mamba without memory retrieval.
+- Record initial latency and throughput metrics clearly in `baseline_benchmarks.md`.
+
+### Step 3: GPU Profiling and Bottleneck Analysis
+- Profile the baseline inference setup using NVIDIA Nsight Systems and Nsight Compute:
+  ```
+  nsys profile -o baseline.qdrep python benchmark.py
+  ncu --target-processes all python benchmark.py
+  ```
+- Document bottlenecks and insights from profiling clearly in `nsight_analysis.md`.
+
+### Step 4: Mem0 Integration and Baseline Benchmark
+- Setup [Mem0](https://github.com/jameshaydon/mem0) separately to ensure stable integration.
+- Benchmark isolated Mem0 retrieval performance and clearly document latency benchmarks.
+
+### Step 5: Custom CUDA and Triton Kernel Development
+- Implement custom CUDA kernels for fused attention and memory retrieval operations (`kernels/cuda/`).
+- Develop corresponding Triton kernels (`kernels/triton/`) to evaluate performance trade-offs.
+- Continuously profile and document kernel performance at each step.
+
+### Step 6: Benchmark Kernel-Level Improvements
+- Run performance benchmarks comparing baseline inference to optimized kernel inference.
+- Clearly document latency and throughput improvements.
+- Generate visualizations (`performance_plots.ipynb`) to illustrate latency reductions.
+
+### Step 7: Advanced Profiling and Optimization
+- Iterate kernel designs based on detailed profiling feedback.
+- Focus on advanced optimizations like memory tiling, kernel fusion, warp-level parallelism, and efficient memory reuse.
+- Clearly document iterative optimization outcomes in profiling documentation.
+
+### Step 8 (Optional): Extend to Mojo Kernels
+- Implement and benchmark equivalent kernels in [Mojo](https://www.modular.com/mojo), targeting diverse hardware.
+- Compare Mojo performance clearly against CUDA and Triton.
+
+---
+
+## Initial Setup Commands
+
+```bash
+# Clone repository and submodules
+git clone --recursive https://github.com/your-username/mamba_kernel_optimization.git
+cd mamba_kernel_optimization
+
+# Setup conda environment
+conda env create -f environment.yml
+conda activate mamba_env
+
+# Install Mem0
+pip install ./mem0
+```
+
+---
+
+## Next Steps
+
+- Complete initial environment setup and verify baseline benchmarks.
+- Document and profile baseline performance clearly.
+- Begin kernel development and Mem0 integration.
+
+#### Additional Resources 
+
+[Mamba](https://github.com/state-spaces/mamba) 
+
+[Transformers to SSMs: Distilling Quadratic Knowledge to Subquadratic Models](https://arxiv.org/pdf/2408.10189)
+
+[Cross-Architecture Distillation Part I - MOHAWK](https://goombalab.github.io/blog/2024/distillation-part1-mohawk/)
+
+[Phi-Mamba](https://github.com/goombalab/phi-mamba)
+
+[Llambda-3B](https://huggingface.co/cartesia-ai/Llamba-3B#)
+
+[Llamba Paper](https://arxiv.org/pdf/2502.14458)
+
+[Cartesia](https://cartesia.ai)
+
+[Edge - On-Device SSMs](https://github.com/cartesia-ai/edge)
+
+[nexa-sdk](https://github.com/NexaAI/nexa-sdk)
+
+[S4 Post](https://hazyresearch.stanford.edu/blog/2022-01-14-s4-1)
+
+
+
