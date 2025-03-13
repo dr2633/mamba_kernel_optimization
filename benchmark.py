@@ -1,3 +1,13 @@
+# Note: HF has cartesia_pytorch 
+# from cartesia_pytorch.Llamba.llamba import LlambaLMHeadModel
+
+
+# Install cartesia-pytorch 
+# pip install --no-binary :all: cartesia-pytorch
+# Kevin Li, Aviv Bick.
+# https://www.kevinyli.com
+# https://avivbick.github.io
+
 import torch
 import time
 from transformers import AutoTokenizer
