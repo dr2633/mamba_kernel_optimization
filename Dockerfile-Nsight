@@ -20,7 +20,14 @@ RUN pip3 install --upgrade pip \
     && pip3 install --default-timeout=300 torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 \
     && pip3 install --default-timeout=300 triton
 
-# Copy repository into the container
+
+# Install NVIDIA Nsight Systems (latest available version) for GPU profiling
+RUN wget -qO- https://developer.download.nvidia.com/devtools/repos/ubuntu2204/amd64/nsight-systems.list | tee /etc/apt/sources.list.d/nsight-systems.list \
+    && apt-get update && apt-get install -y nsight-systems \
+    && rm -rf /var/lib/apt/lists/*
+
+
+# Copy repository into the containera
 COPY . /workspace/mamba_kernel_optimization
 
 # Install local submodules: Mem0 and Edge

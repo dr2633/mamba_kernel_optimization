@@ -71,10 +71,11 @@ docker build --platform linux/amd64 -t mamba_kernel_optimization .
 docker images
 ```
 
-### Run Docker Container
+### Run Docker Container (run locally with CPU)
 
 ```bash
-docker run --gpus all -it mamba_kernel_optimization
+docker run -it mamba_kernel_optimization
+
 ```
 
 ### Inside Container: Verify GPU Access
