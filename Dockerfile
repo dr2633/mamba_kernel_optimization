@@ -18,8 +18,10 @@ WORKDIR /workspace
 # Upgrade pip, Install PyTorch (CUDA 12.1), Triton, cartesia-pytorch, and mem0ai (with increased timeout)
 RUN pip3 install --upgrade pip \
     && pip3 install --default-timeout=300 torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 \
-    && pip3 install --default-timeout=300 triton cartesia-pytorch mem0ai
+    && pip3 install --default-timeout=300 cartesia-pytorch mem0ai
 
+
+RUN pip3 install ./triton/python
 
 # Copy repository into the containera
 COPY . /workspace/mamba_kernel_optimization
@@ -32,3 +34,8 @@ RUN pip3 install ./mamba_kernel_optimization/mem0 \
 WORKDIR /workspace/mamba_kernel_optimization
 
 CMD ["/bin/bash"]
+
+
+# docker build -t mamba-cuda .
+# docker run -it mamba-cuda bash
+# nvcc --version

@@ -4,3 +4,6 @@
 [submodule "mem0"]
 	path = mem0
 	url = https://github.com/dr2633/mem0
+[submodule "triton"]
+	path = triton
+	url = https://github.com/triton-lang/triton.git
