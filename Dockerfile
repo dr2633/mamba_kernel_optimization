@@ -15,12 +15,13 @@ ENV LD_LIBRARY_PATH=/usr/local/cuda-12.1/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_P
 # Working directory
 WORKDIR /workspace
 
-# Upgrade pip, Install PyTorch (CUDA 12.1), Triton, transformers, cartesia-pytorch, einops, flash-attn
+# Upgrade pip, Install PyTorch (CUDA 12.1) and Triton (with increased timeout)
 RUN pip3 install --upgrade pip \
     && pip3 install --default-timeout=300 torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 \
-    && pip3 install --default-timeout=300 triton transformers cartesia-pytorch einops flash-attn numpy scipy pandas scikit-learn
+    && pip3 install --default-timeout=300 triton
 
-# Copy repository into the container
+
+# Copy repository into the containera
 COPY . /workspace/mamba_kernel_optimization
 
 # Install local submodules: Mem0 and Edge
