@@ -15,10 +15,10 @@ ENV LD_LIBRARY_PATH=/usr/local/cuda-12.1/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_P
 # Working directory
 WORKDIR /workspace
 
-# Upgrade pip, Install PyTorch (CUDA 12.1) and Triton (with increased timeout)
+# Upgrade pip, Install PyTorch (CUDA 12.1), Triton, cartesia-pytorch, and mem0ai (with increased timeout)
 RUN pip3 install --upgrade pip \
     && pip3 install --default-timeout=300 torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 \
-    && pip3 install --default-timeout=300 triton
+    && pip3 install --default-timeout=300 triton cartesia-pytorch mem0ai
 
 
 # Copy repository into the containera
